@@ -80,5 +80,6 @@ query GetProductList {
     estimatedDeliveryTime
   }
 }
+```
 
 Alternatively, you can access `http://localhost:4000/graphql` to enter the router sandbox mode, where instrospection can be done, and sample queries can be constructed more easily before running.
