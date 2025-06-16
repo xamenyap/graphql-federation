@@ -1,0 +1,11 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key", "@external", "@requires"])
+
+scalar DateTime
+
+type Product @key(fields: "id") {
+  id: ID! @external
+  price: Float! @external
+  weight: Float @external
+  estimatedDeliveryTime: DateTime @requires(fields: "price weight")
+}
