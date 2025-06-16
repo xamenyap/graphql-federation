@@ -1,15 +1,14 @@
-# supergraph.yaml
 federation_version: 2
 subgraphs:
   product:
-    routing_url: http://product:8081/graphql
+    routing_url: http://product:8081/query
     schema:
       file: /workdir/product/graph/schema.graphqls
   review:
-    routing_url: http://review:8082/graphql
+    routing_url: http://review:8082/query
     schema:
       file: /workdir/review/graph/schema.graphqls
   shipping:
-    routing_url: http://shipping:8083/graphql
+    routing_url: http://shipping:8083/query
     schema:
       file: /workdir/shipping/graph/schema.graphqls

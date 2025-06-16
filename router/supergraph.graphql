@@ -29,9 +29,9 @@ scalar join__DirectiveArguments
 scalar join__FieldSet
 
 enum join__Graph {
-  PRODUCT @join__graph(name: "product", url: "http://product:8081/graphql")
-  REVIEW @join__graph(name: "review", url: "http://review:8082/graphql")
-  SHIPPING @join__graph(name: "shipping", url: "http://shipping:8083/graphql")
+  PRODUCT @join__graph(name: "product", url: "http://product:8081/query")
+  REVIEW @join__graph(name: "review", url: "http://review:8082/query")
+  SHIPPING @join__graph(name: "shipping", url: "http://shipping:8083/query")
 }
 
 scalar link__Import

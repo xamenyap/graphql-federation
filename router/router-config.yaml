@@ -1,0 +1,16 @@
+supergraph:
+  listen: 0.0.0.0:4000
+  introspection: true
+  path: /graphql
+
+headers:
+  all:
+    request:
+      - propagate:
+          matching: .*
+
+sandbox:
+  enabled: true
+
+homepage:
+  enabled: false

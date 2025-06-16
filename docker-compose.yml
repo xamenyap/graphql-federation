@@ -7,7 +7,14 @@ services:
       - "4000:4000"
     volumes:
       - ./router/supergraph.graphql:/dist/config/supergraph.graphql
-    command: --supergraph /dist/config/supergraph.graphql
+      - ./router/router-config.yaml:/dist/config/router.yaml
+    command: [
+      "--dev",
+      "-c",
+      "config/router.yaml",
+      "-s",
+      "config/supergraph.graphql"
+    ]
     depends_on:
       - product
       - review
