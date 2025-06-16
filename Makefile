@@ -17,3 +17,9 @@ compose-supergraph:
 		$(ROVER_IMAGE) \
 		supergraph compose --config ./$(CONFIG_FILE) > $(OUTPUT_FILE)
 	@echo "✅ Supergraph composed and written to $(OUTPUT_FILE)"
+
+# Run all docker containers
+docker-compose-up:
+	@echo "🧩 Running all containers..."
+	docker-compose up -d --build
+	@echo "✅ All containers up!"
