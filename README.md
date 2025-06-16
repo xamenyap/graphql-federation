@@ -38,7 +38,7 @@ This command will:
 Once the supergraph is composed, you can start all services using Docker Compose:
 
 ```bash
-make docker-compose-up
+make start
 ```
 
 This command will:

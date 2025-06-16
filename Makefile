@@ -18,8 +18,14 @@ compose-supergraph:
 		supergraph compose --config ./$(CONFIG_FILE) > $(OUTPUT_FILE)
 	@echo "✅ Supergraph composed and written to $(OUTPUT_FILE)"
 
-# Run all docker containers
-docker-compose-up:
-	@echo "🧩 Running all containers..."
+# Start all docker containers
+start:
+	@echo "🧩 Starting all containers..."
 	docker-compose up -d --build
 	@echo "✅ All containers up!"
+
+# Stopping all docker containers
+stop:
+	@echo "🧩 Stopping all containers..."
+	docker-compose down
+	@echo "✅ All containers down!"
