@@ -7,6 +7,6 @@ type Review {
 }
 
 type Product @key(fields: "id") {
-  id: ID! @external
+  id: ID!
   reviews: [Review!]
 }

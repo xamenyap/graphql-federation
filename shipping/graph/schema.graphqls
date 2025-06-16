@@ -4,7 +4,7 @@ extend schema
 scalar DateTime
 
 type Product @key(fields: "id") {
-  id: ID! @external
+  id: ID!
   price: Float! @external
   weight: Float @external
   estimatedDeliveryTime: DateTime @requires(fields: "price weight")
