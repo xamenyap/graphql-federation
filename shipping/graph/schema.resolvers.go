@@ -6,14 +6,53 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"time"
 
 	"github.com/xamenyap/graphql-federation/shipping/graph/model"
 )
 
 // EstimatedDeliveryTime is the resolver for the estimatedDeliveryTime field.
 func (r *productResolver) EstimatedDeliveryTime(ctx context.Context, obj *model.Product, federationRequires map[string]any) (*string, error) {
-	panic(fmt.Errorf("not implemented: EstimatedDeliveryTime - estimatedDeliveryTime"))
+	var productPrice float64
+	if price, ok := federationRequires["price"]; ok {
+		convertedPrice := price.(json.Number)
+		productPrice, _ = convertedPrice.Float64()
+	}
+
+	var productWeight *float64
+	if weight, ok := federationRequires["weight"]; ok {
+		convertedWeight, ok := weight.(json.Number)
+		if ok {
+			weight, _ := convertedWeight.Float64()
+			productWeight = &weight
+		}
+	}
+
+	// Premium product, should aim to ship within 1 days
+	if productPrice >= 7 {
+		return shippingIn(time.Hour * 24), nil
+	}
+
+	if productWeight != nil {
+		// Bulky products take more time to ship, approximately 5 days
+		if *productWeight >= 2 {
+			return shippingIn(time.Hour * 24 * 5), nil
+		}
+
+		// Small products can be shipped fast, around 2 days
+		if *productWeight < 2 {
+			return shippingIn(time.Hour * 24 * 2), nil
+		}
+	}
+
+	// Ship within 14 days by default
+	return shippingIn(time.Hour * 24 * 14), nil
+}
+
+func shippingIn(d time.Duration) *string {
+	estimatedShippingIn := time.Now().Add(d).Format(time.RFC3339)
+	return &estimatedShippingIn
 }
 
 // Product returns ProductResolver implementation.
