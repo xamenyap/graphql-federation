@@ -5,7 +5,7 @@ CONFIG_FILE := router/supergraph-config.yaml
 ROVER_IMAGE := worksome/rover:latest
 
 # Default target
-all: compose-supergraph
+all: stop compose-supergraph start
 
 # Compose the supergraph using Rover CLI in Docker
 compose-supergraph:
