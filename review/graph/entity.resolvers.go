@@ -12,30 +12,23 @@ import (
 
 // FindProductByID is the resolver for the findProductByID field.
 func (r *entityResolver) FindProductByID(ctx context.Context, id string) (*model.Product, error) {
-	var reviews []*model.Review
-	switch id {
-	case "1":
-		reviews = []*model.Review{
-			{
-				ID:   "1",
-				Body: "very good product",
-			},
-			{
-				ID:   "2",
-				Body: "Decent product, but I found better on other platforms",
-			},
-		}
-	case "2":
-		reviews = []*model.Review{
-			{
-				ID:   "3",
-				Body: "Very mediocre, should not buy",
-			},
-		}
+
+	reviews, err := r.ReviewsGetter.GetByProductID(id)
+	if err != nil {
+		return nil, err
 	}
+
+	var reviewModels []*model.Review
+	for _, review := range reviews {
+		reviewModels = append(reviewModels, &model.Review{
+			ID:   review.ID,
+			Body: review.Body,
+		})
+	}
+
 	return &model.Product{
 		ID:      id,
-		Reviews: reviews,
+		Reviews: reviewModels,
 	}, nil
 }
 

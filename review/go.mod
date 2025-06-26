@@ -4,10 +4,12 @@ go 1.24.2
 
 require (
 	github.com/99designs/gqlgen v0.17.74
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/vektah/gqlparser/v2 v2.5.27
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/agnivade/levenshtein v1.2.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
