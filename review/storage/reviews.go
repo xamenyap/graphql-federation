@@ -1,4 +1,4 @@
-package reviews
+package storage
 
 import (
 	"database/sql"

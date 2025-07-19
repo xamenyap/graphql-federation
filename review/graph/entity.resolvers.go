@@ -12,7 +12,6 @@ import (
 
 // FindProductByID is the resolver for the findProductByID field.
 func (r *entityResolver) FindProductByID(ctx context.Context, id string) (*model.Product, error) {
-
 	reviews, err := r.ReviewsGetter.GetByProductID(id)
 	if err != nil {
 		return nil, err

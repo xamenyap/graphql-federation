@@ -16,7 +16,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/vektah/gqlparser/v2/ast"
 	"github.com/xamenyap/graphql-federation/review/graph"
-	"github.com/xamenyap/graphql-federation/review/reviews"
+	"github.com/xamenyap/graphql-federation/review/storage"
 )
 
 const defaultPort = "8082"
@@ -47,7 +47,7 @@ func main() {
 		log.Fatal("failed to connect to DB", err)
 	}
 
-	reviewsRepository := reviews.NewRepository(db)
+	reviewsRepository := storage.NewRepository(db)
 
 	if err := reviewsRepository.Seed(); err != nil {
 		log.Fatal("error seeding reviews db", err)
