@@ -1,6 +1,10 @@
 package graph
 
-import "github.com/xamenyap/graphql-federation/review/storage"
+import (
+	"context"
+
+	"github.com/xamenyap/graphql-federation/review/storage"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -11,5 +15,5 @@ type Resolver struct {
 }
 
 type ReviewsGetter interface {
-	GetByProductID(productID string) ([]storage.Review, error)
+	GetByProductID(ctx context.Context, productID string) ([]storage.Review, error)
 }

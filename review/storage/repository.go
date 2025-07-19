@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 )
@@ -19,10 +20,10 @@ func NewRepository(db *sql.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (r *Repository) GetByProductID(productID string) ([]Review, error) {
+func (r *Repository) GetByProductID(ctx context.Context, productID string) ([]Review, error) {
 	query := `SELECT id, body, product_id FROM reviews WHERE product_id = ?`
 
-	rows, err := r.db.Query(query, productID)
+	rows, err := r.db.QueryContext(ctx, query, productID)
 	if err != nil {
 		return nil, fmt.Errorf("query failed: %w", err)
 	}
@@ -38,6 +39,27 @@ func (r *Repository) GetByProductID(productID string) ([]Review, error) {
 	}
 
 	return reviews, nil
+}
+
+func (r *Repository) GetByProductIDs(ctx context.Context, productIDs []string) (map[string][]Review, error) {
+	query := `SELECT id, body, product_id FROM reviews WHERE product_id IN (?)`
+
+	rows, err := r.db.QueryContext(ctx, query, productIDs)
+	if err != nil {
+		return nil, fmt.Errorf("query failed: %w", err)
+	}
+	defer rows.Close()
+
+	results := make(map[string][]Review)
+	for rows.Next() {
+		var r Review
+		if err := rows.Scan(&r.ID, &r.Body, &r.ProductID); err != nil {
+			return nil, fmt.Errorf("row scan failed: %w", err)
+		}
+		results[r.ProductID] = append(results[r.ProductID], r)
+	}
+
+	return results, nil
 }
 
 func (r *Repository) Seed() error {
