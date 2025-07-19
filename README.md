@@ -41,14 +41,16 @@ Once the supergraph is composed, you can start all services using Docker Compose
 make start
 ```
 
+This command will:
+*   Build the Docker images for the `product`, `review`, and `shipping` services.
+*   Start all four services (`router`, `product`, `review`, `shipping`) in detached mode.
+
 To stop everything:
 ```bash
 make stop
 ```
 
-This command will:
-*   Build the Docker images for the `product`, `review`, and `shipping` services.
-*   Start all four services (`router`, `product`, `review`, `shipping`) in detached mode.
+This command simply stop all docker containers.
 
 ## Services Overview
 
