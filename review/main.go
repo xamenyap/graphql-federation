@@ -16,6 +16,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/vektah/gqlparser/v2/ast"
 	"github.com/xamenyap/graphql-federation/review/graph"
+	"github.com/xamenyap/graphql-federation/review/loader"
 	"github.com/xamenyap/graphql-federation/review/storage"
 )
 
@@ -71,7 +72,7 @@ func main() {
 		Cache: lru.New[string](100),
 	})
 
-	handler := storage.Middleware(reviewsRepository, srv)
+	handler := loader.Middleware(reviewsRepository, srv)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", handler)

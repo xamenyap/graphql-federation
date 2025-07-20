@@ -1,4 +1,4 @@
-package storage
+package loader
 
 import (
 	"context"
@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"github.com/vikstrous/dataloadgen"
+	"github.com/xamenyap/graphql-federation/review/storage"
 )
 
-func NewLoader(repo *Repository) *dataloadgen.Loader[string, []Review] {
+func NewLoader(repo *storage.Repository) *dataloadgen.Loader[string, []storage.Review] {
 	r := &reader{
 		repo: repo,
 	}
@@ -16,16 +17,16 @@ func NewLoader(repo *Repository) *dataloadgen.Loader[string, []Review] {
 }
 
 type reader struct {
-	repo *Repository
+	repo *storage.Repository
 }
 
-func (r *reader) getByProductIDs(ctx context.Context, productIDs []string) ([][]Review, []error) {
+func (r *reader) getByProductIDs(ctx context.Context, productIDs []string) ([][]storage.Review, []error) {
 	results, err := r.repo.GetByProductIDs(ctx, productIDs)
 	if err != nil {
 		return nil, []error{err}
 	}
 
-	reviews := make([][]Review, 0)
+	reviews := make([][]storage.Review, 0)
 	for _, productID := range productIDs {
 		reviews = append(reviews, results[productID])
 	}
@@ -38,7 +39,7 @@ type ctxKey string
 const loaderCtxKey ctxKey = "loader"
 
 // Middleware injects data loaders into the context
-func Middleware(repo *Repository, next http.Handler) http.Handler {
+func Middleware(repo *storage.Repository, next http.Handler) http.Handler {
 	// return a middleware that injects the loader to the request context
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		l := NewLoader(repo)
@@ -48,6 +49,6 @@ func Middleware(repo *Repository, next http.Handler) http.Handler {
 }
 
 // For returns the dataloader for a given context
-func For(ctx context.Context) *dataloadgen.Loader[string, []Review] {
-	return ctx.Value(loaderCtxKey).(*dataloadgen.Loader[string, []Review])
+func For(ctx context.Context) *dataloadgen.Loader[string, []storage.Review] {
+	return ctx.Value(loaderCtxKey).(*dataloadgen.Loader[string, []storage.Review])
 }
