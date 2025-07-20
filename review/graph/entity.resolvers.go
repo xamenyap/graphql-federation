@@ -8,11 +8,13 @@ import (
 	"context"
 
 	"github.com/xamenyap/graphql-federation/review/graph/model"
+	"github.com/xamenyap/graphql-federation/review/storage"
 )
 
 // FindProductByID is the resolver for the findProductByID field.
 func (r *entityResolver) FindProductByID(ctx context.Context, id string) (*model.Product, error) {
-	reviews, err := r.ReviewsGetter.GetByProductID(ctx, id)
+	l := storage.For(ctx)
+	reviews, err := l.Load(ctx, id)
 	if err != nil {
 		return nil, err
 	}

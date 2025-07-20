@@ -43,14 +43,16 @@ func (r *Repository) GetByProductID(ctx context.Context, productID string) ([]Re
 }
 
 func (r *Repository) GetByProductIDs(ctx context.Context, productIDs []string) (map[string][]Review, error) {
-	placeHolders := make([]string, len(productIDs))
-	for range productIDs {
+	placeHolders := make([]string, 0, len(productIDs))
+	args := make([]any, 0, len(productIDs))
+	for _, productID := range productIDs {
 		placeHolders = append(placeHolders, "?")
+		args = append(args, productID)
 	}
 
 	query := fmt.Sprintf("SELECT id, body, product_id FROM reviews WHERE product_id IN (%s)", strings.Join(placeHolders, ","))
 
-	rows, err := r.db.QueryContext(ctx, query, productIDs)
+	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("query failed: %w", err)
 	}
