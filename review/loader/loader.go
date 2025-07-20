@@ -38,9 +38,7 @@ type ctxKey string
 
 const loaderCtxKey ctxKey = "loader"
 
-// Middleware injects data loaders into the context
-func Middleware(repo *storage.Repository, next http.Handler) http.Handler {
-	// return a middleware that injects the loader to the request context
+func HTTPMiddleware(repo *storage.Repository, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		l := NewLoader(repo)
 		r = r.WithContext(context.WithValue(r.Context(), loaderCtxKey, l))
@@ -48,7 +46,6 @@ func Middleware(repo *storage.Repository, next http.Handler) http.Handler {
 	})
 }
 
-// For returns the dataloader for a given context
-func For(ctx context.Context) *dataloadgen.Loader[string, []storage.Review] {
+func From(ctx context.Context) *dataloadgen.Loader[string, []storage.Review] {
 	return ctx.Value(loaderCtxKey).(*dataloadgen.Loader[string, []storage.Review])
 }

@@ -72,7 +72,7 @@ func main() {
 		Cache: lru.New[string](100),
 	})
 
-	handler := loader.Middleware(reviewsRepository, srv)
+	handler := loader.HTTPMiddleware(reviewsRepository, srv)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", handler)
