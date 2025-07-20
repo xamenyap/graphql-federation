@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 )
 
 type Review struct {
@@ -42,7 +43,12 @@ func (r *Repository) GetByProductID(ctx context.Context, productID string) ([]Re
 }
 
 func (r *Repository) GetByProductIDs(ctx context.Context, productIDs []string) (map[string][]Review, error) {
-	query := `SELECT id, body, product_id FROM reviews WHERE product_id IN (?)`
+	placeHolders := make([]string, len(productIDs))
+	for range productIDs {
+		placeHolders = append(placeHolders, "?")
+	}
+
+	query := fmt.Sprintf("SELECT id, body, product_id FROM reviews WHERE product_id IN (%s)", strings.Join(placeHolders, ","))
 
 	rows, err := r.db.QueryContext(ctx, query, productIDs)
 	if err != nil {
